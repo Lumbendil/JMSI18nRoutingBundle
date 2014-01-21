@@ -271,6 +271,13 @@ class I18nRouter extends Router
             );
         }
 
+        if (isset($params['_locale'])
+                && $this->getContext()->getParameter('_locale')
+                && $this->getContext()->getParameter('_locale') != $params['_locale']) {
+            throw new ResourceNotFoundException(sprintf(
+                'Resource corresponding to pattern "%s" not found for locale "%s".', $url, $this->getContext()->getParameter('_locale')));
+        }
+
         // if we have no locale set on the route, we try to set one according to the localeResolver
         // if we don't do this all _internal routes will have the default locale on first request
         if (!isset($params['_locale'])
